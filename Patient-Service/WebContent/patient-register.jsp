@@ -4,80 +4,122 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Login</title>
+
+<title>Register</title>
+
+<!-- Style -->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" 
 integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-<link rel="stylesheet" href="style/style.css">
+<link rel="stylesheet" href="Views/style.css">
+<link rel="stylesheet" href="Views/bootstrap.min.css">
+
+<!-- jQuery -->
+<script src="Components/jquery-3.5.0.min.js"></script>
+<script src="Components/script.js"></script>
+
 </head>
 <body>
 
 	<div class="container">
         <fieldset>
             <h3>
-                <span>Patient Registration</span>
+                <span>Patient Management</span>
             </h3>
 
-            <form action="patient_register_process.jsp">
+            <form id="registration-form" action="patient_register_process.jsp">
+            
+            	<!-- NIC -->
                 <div class="form-group row">
-                    <label for="nic" class="col-sm-2 col-form-label">NIC</label>
+                    <label for="nic" class="col-sm-2 col-form-label">NIC <span class="required-sign">(*)</span></label>
                     <div class="col-sm-10">
-                        <input type="text" name="nic" class="form-control">
+                        <input type="text" name="nic" id="nic" class="form-control">
+                        <span class="error_message" id="nic_error"></span>
                     </div>
                 </div>
+                
+                <!-- first name -->
                 <div class="form-group row">
-                    <label for="nic" class="col-sm-2 col-form-label">First Name</label>
+                    <label for="firstName" class="col-sm-2 col-form-label">First Name <span class="required-sign">(*)</span></label>
                     <div class="col-sm-10">
-                        <input type="text" name="firstName" class="form-control">
+                        <input type="text" name="firstName" class="form-control" id="first-name">
+                        <span class="error_message" id="fName_error"></span>
                     </div>
                 </div>
+                
+                <!-- last name -->
                 <div class="form-group row">
-                    <label for="nic" class="col-sm-2 col-form-label">Last Name</label>
+                    <label for="last_name" class="col-sm-2 col-form-label">Last Name <span class="required-sign">(*)</span></label>
                     <div class="col-sm-10">
-                        <input type="text" name="lastName" class="form-control">
+                        <input type="text" name="lastName" class="form-control" id="last-name">
+                        <span class="error_message" id="lName_error"></span>
                     </div>
                 </div>
+                
+                <!-- DOB -->
                 <div class="form-group row">
-                    <label for="nic" class="col-sm-2 col-form-label">Date of Birth</label>
+                    <label for="dob" class="col-sm-2 col-form-label">Date of Birth <span class="required-sign">(*)</span></label>
                     <div class="col-sm-10">
-                        <input type="date" name="dob" class="form-control">
+                        <input type="date" name="dob" class="form-control" id="dob">
+                        <span class="error_message" id="dob_error"></span>
                     </div>
                 </div>
+                
+                <!-- gender -->
                 <fieldset class="form-group">
                     <div class="row">
-                      <legend class="col-form-label col-sm-2 pt-0">Gender</legend>
+                      <legend class="col-form-label col-sm-2 pt-0">Gender <span class="required-sign">(*)</span></legend>
                       <div class="col-sm-10">
                         <div class="form-check">
-                          <input class="form-check-input" type="radio" name="gender" value="male" checked>
+                          <input class="form-check-input" id="genderMale" type="radio" name="gender" value="male" checked>
                           <label class="form-check-label" for="male">
                             Male
                           </label>
                         </div>
                         <div class="form-check">
-                          <input class="form-check-input" type="radio" name="gender" value="female">
+                          <input class="form-check-input" id="genderFemale" type="radio" name="gender" value="female">
                           <label class="form-check-label" for="female">
                             Female
                           </label>
                         </div>
+                        <span class="error_message" id="gender_error"></span>
                       </div>
                     </div>
                 </fieldset>
+                
+                <!-- email -->
                 <div class="form-group row">
-                    <label for="nic" class="col-sm-2 col-form-label">Email</label>
+                    <label for="email" class="col-sm-2 col-form-label">Email <span class="required-sign">(*)</span></label>
                     <div class="col-sm-10">
-                        <input type="email" name="email"  class="form-control">
+                        <input type="email" name="email" id="email" class="form-control">
+                        <span class="error_message" id="email_error"></span>
                     </div>
                 </div>
+                
+                <!-- password -->
                 <div class="form-group row">
-                    <label for="nic" class="col-sm-2 col-form-label">Password</label>
+                    <label for="password" class="col-sm-2 col-form-label">Password <span class="required-sign">(*)</span></label>
                     <div class="col-sm-10">
-                        <input type="password" name="password" class="form-control">
+                        <input type="password" name="password" class="form-control" id="password">
+                        <span class="error_message" id="password_error"></span>
                     </div>
                 </div>
+                
+                <!--retype password -->
                 <div class="form-group row">
+                    <label for="retype_password" class="col-sm-2 col-form-label">Retype Password <span class="required-sign">(*)</span></label>
                     <div class="col-sm-10">
-                      <button type="submit" class="btn btn-success">Sign in</button>
+                        <input type="password" name="retype_password" class="form-control" id="retype-password">
+                        <span class="error_message" id="retype-password_error"></span>
                     </div>
                 </div>
+                
+                <!-- sign in button -->
+                <div class="form-group row">
+                    <div class="col-sm-10">
+                      <button type="submit" class="btn btn-success" id="signin-button">Sign in</button>
+                    </div>
+                </div>
+                
             </form>
             
             <div class="alert alert-success">
@@ -89,7 +131,12 @@ integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9If
             </div>
              
         </fieldset>
+
     </div>
+
+	<div class="continer-fluid">
+		
+	</div>
 
 </body>
 </html>
