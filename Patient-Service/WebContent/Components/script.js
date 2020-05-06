@@ -168,37 +168,37 @@ function validateItemForm()
 	// nic is required
 	if ($("#nic").val().trim() == "")
 	{
-		return "Insert Item Code.";
+		return "Insert Nic";
 	}
 	
 	// name is required
 	if ($("#first-name").val().trim() == "")
 	{
-		return "Insert Item Name.";
+		return "Insert First Name";
 	}
 	
 	// last name is required
 	if ($("#last-name").val().trim() == "")
 	{
-		return "Insert Item Price.";
+		return "Insert Last Name";
 	}
 	
 	// dob is required
 	if ($("#dob").val().trim() == "")
 	{
-		return "Insert Item Description.";
+		return "Insert DOB";
 	}
 	
 	// email is required
 	if ($("#email").val().trim() == "")
 	{
-		return "Insert Item Price.";
+		return "Insert Email";
 	}
 	
 	// password is required
 	if ($("#password").val().trim() == "")
 	{
-		return "Insert Item Description.";
+		return "Insert Password";
 	}
 	
 	return true;

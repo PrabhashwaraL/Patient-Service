@@ -28,7 +28,7 @@ integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9If
                 <span>Patient Management</span>
             </h3>
 
-            <form id="registration-form" name="registration-form" method="post" action="patient-register.jsp">
+            <form id="registration-form" name="registration-form" action="patient-register.jsp">
             
             	<!-- NIC -->
                 <div class="form-group row">
@@ -116,12 +116,12 @@ integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9If
                 </div>
                 
                 <!-- hidden field -->
-                <input type="hidden" id="hidField" name="hidField" value="save">
+                <input type="hidden" id="hidField" name="hidField" value="">
                 
                 <!-- sign in button -->
                 <div class="form-group row">
                     <div class="col-sm-10">
-                      <button type="submit" class="btn btnUpdate btn-success" id="signin-button">Sign in</button>
+                      <input name="btnSave" type="button" value="save" class="btn btn-success" id="signin-button">
                     </div>
                 </div>
                 
