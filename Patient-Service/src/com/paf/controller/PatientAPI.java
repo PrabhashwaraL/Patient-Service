@@ -72,8 +72,6 @@ public class PatientAPI extends HttpServlet {
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
 		
-		System.out.println(nic);
-		
 		Patient patient = new Patient(nic, firstName, lastName, dob, gender, email, password);
 		
 		String output = PatientDAO.registerPatient(patient);

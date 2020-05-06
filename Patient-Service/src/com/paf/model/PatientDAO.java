@@ -163,7 +163,7 @@ public static Connection getConnection( ) {
 					"</head>" + 
 					"<body>" +
 					"<table border='1'><tr><th>NIC</th>" + "<th>First Name</th><th>Last Name</th>" + "<th>Date of Birth</th>" +
-					"<th>Gender</th>" + "<th>Email</th>" + "<th>Password</th>" + "<th>Update</th>" + "<th>Delete</th>" +
+					"<th>Gender</th>" + "<th>Email</th>" + "<th>Password</th>" + "<th>Update</th>" + "<th>Delete</th>" + "<th>_</th>" +
 					"</tr>";
 			
 			String query = "select * from patient_registration";
@@ -179,7 +179,7 @@ public static Connection getConnection( ) {
 				String email = rs.getString("email");
 				String password = rs.getString("patientPassword");
 				
-				output += "<tr><td><input id='hidFieldUpdate' name='hidFieldUpdate' type='hidden' value='" + nic + "'>" + nic + "</td>";
+				output += "<tr><td>" + nic + "</td>";
 				output += "<td>" + firstName + "</td>";
 				output += "<td>" + lastName + "</td>";
 				output += "<td>" + dob + "</td>";
@@ -190,6 +190,7 @@ public static Connection getConnection( ) {
 				output += "<td><input name='btnUpdate' type='button' value='Update' class='btnUpdate btn btn-primary'></td>";
 				output += "<td>"
 						+ "<input name='btnDelete' type='button' value='Delete' class='btn btn-danger btnRemove' data-nic='" + nic + "'></td>";
+				output += "<input id='hidFieldUpdate' name='hidFieldUpdate' type='hidden' value='" + nic + "'>";
 				
 				output += "</tr>";
 			}
