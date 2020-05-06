@@ -14,6 +14,12 @@ public class Patient {
 		
 	}
 	
+	public Patient(String nic) {
+		this.nic = nic;
+	}
+
+
+
 	public Patient(String email, String password) {
 		this.email = email;
 		this.password = password;

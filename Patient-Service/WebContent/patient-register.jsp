@@ -1,5 +1,7 @@
+<%@page import="com.paf.model.PatientDAO"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -26,7 +28,7 @@ integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9If
                 <span>Patient Management</span>
             </h3>
 
-            <form id="registration-form" action="patient_register_process.jsp">
+            <form id="registration-form" name="registration-form" method="post" action="patient-register.jsp">
             
             	<!-- NIC -->
                 <div class="form-group row">
@@ -113,29 +115,40 @@ integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9If
                     </div>
                 </div>
                 
+                <!-- hidden field -->
+                <input type="hidden" id="hidField" name="hidField" value="save">
+                
                 <!-- sign in button -->
                 <div class="form-group row">
                     <div class="col-sm-10">
-                      <button type="submit" class="btn btn-success" id="signin-button">Sign in</button>
+                      <button type="submit" class="btn btnUpdate btn-success" id="signin-button">Sign in</button>
                     </div>
                 </div>
                 
             </form>
-            
-            <div class="alert alert-success">
-            	<%
-            		if(session.getAttribute("patient_registraton_status") != null) {
-            			out.print(session.getAttribute("patient_registraton_status"));
-            		}
-            	%>
-            </div>
              
         </fieldset>
 
     </div>
 
+	<hr>
+
 	<div class="continer-fluid">
+		<div class="row">
 		
+			<!-- Table -->
+			<div class="col-sm-8" id="#divItemsGrid">
+				<h3>Patient Details</h3>
+				<%=PatientDAO.patientList() %>
+			</div>
+			
+			<!-- Status -->
+			<div class="col-sm-4">
+				<div id="alertSuccess" class="alert alert-success alertArea"></div>
+				<div id="alertError" class="alert alert-danger alertArea"></div>
+			</div>
+			
+		</div>
 	</div>
 
 </body>

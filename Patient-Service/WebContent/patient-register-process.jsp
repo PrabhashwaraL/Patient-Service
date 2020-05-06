@@ -19,5 +19,9 @@
 	response.sendRedirect("patient-register.jsp");
 %>
 
+<%
+
+%>
+
 </body>
 </html>

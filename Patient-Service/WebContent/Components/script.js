@@ -1,5 +1,12 @@
-$(document).ready(function() {
-
+$(document).ready(function()
+{
+	if ($("#alertSuccess").text().trim() == "")
+	{
+		$("#alertSuccess").hide();
+	}
+	
+	$("#alertError").hide();
+	
 	// hide area of error messages
 	$("#nic_error").hide();
 	$("#fName_error").hide();
@@ -10,13 +17,6 @@ $(document).ready(function() {
 	$("#password_error").hide();
 	$("#retype-password_error").hide();
 	
-	// variables for validations
-	let vNic = true;
-	let vEmail = true;
-	let vPassword = true;
-	let vRetypePassword = true;
-	
-
 	// check number of characters for nic
 	$("#nic").focusout(function() {
 		vNic = checkNic();
@@ -36,42 +36,173 @@ $(document).ready(function() {
 	$("#retype-password").focusout(function() {
 		vRetypePassword = checkRetypePassword();
 	});
+});
 
-	// check empty text fields
-	$(document).on("click", "#signin-button", function(event) {
+$(document).on("click", "#signin-button", function(event) {
 
-		let nicStatus = nicRequired();
-		let fNameStatus = fNameRequired();
-		let sNameStatus = sNameRequired();
-		let dobStatus = dobRequired();
-		let genderStatus = genderRequied();
-		let emailStatus = emailRequied();
-		let passwordStatus = passwordRequied();
-		let retypePasswordStatus = retypePasswordRequied();
-		
-		// 
-		$("#registration-form").submit(function() {
-			vNic = checkNic();
-			vEmail = checkEmail();
-			vPassword = checkPassword();
-			vRetypePassword = checkRetypePassword();
-			
-			if (nicStatus == false || fNameStatus == false || sNameStatus == false || dobStatus == false
-					|| genderStatus == false || emailStatus == false || passwordStatus == false || retypePasswordStatus == false) {
-				return false;
-			} else {
-				
-				if(vNic == false || vEmail == false || vPassword == false || vRetypePassword == false) {
-					return false;
-				} else {
-					return true;
-				}
-			}
+	$("#alertSuccess").text("");
+	$("#alertSuccess").hide();
+	$("#alertError").text("");
+	$("#alertError").hide();
+
+
+	var status = validateItemForm();
+
+	if (status != true) {
+		$("#alertError").text(status);
+		$("#alertError").show();
+		return;
+	}
+
+	// If valid------------------------
+	var method = ($("#hidField").val() == "") ? "POST" : "PUT";
+
+	$.ajax({
+		url : "PatientAPI",
+		type : method,
+		data : $("#registration-form").serialize(),
+		dataType : "text",
+		complete : function(response, status) {
+			onItemSaveComplete(response.responseText, status);
+		}
+	});
+});
+
+$(document).on(
+		"click",
+		".btnUpdate",
+		function(event) {
+			$("#hidField").val(
+					$(this).closest("tr").find('#hidFieldUpdate').val());
+			$("#nic").val($(this).closest("tr").find('td:eq(0)').text());
+			$("#first-name").val($(this).closest("tr").find('td:eq(1)').text());
+			$("#last-name").val($(this).closest("tr").find('td:eq(2)').text());
+			$("#dob").val($(this).closest("tr").find('td:eq(3)').text());
+		//	$("#genderMale").val($(this).closest("tr").find('td:eq(3)').text());
+			$("#email").val($(this).closest("tr").find('td:eq(5)').text());
+			$("#password").val($(this).closest("tr").find('td:eq(6)').text());
 		});
 
-	});
+function onItemSaveComplete(response, status)
+{
+	if (status == "success")
+	{
+		var resultSet = JSON.parse(response);
+		if (resultSet.status.trim() == "success")
+		{
+			$("#alertSuccess").text("Successfully saved.");
+			$("#alertSuccess").show();
+			$("#divItemsGrid").html(resultSet.data);
+		} 
+		else if (resultSet.status.trim() == "error")
+		{
+			$("#alertError").text(resultSet.data);
+			$("#alertError").show();
+		}
+	} 
+	else if (status == "error")
+	{
+		$("#alertError").text("Error while saving.");
+		$("#alertError").show();
+	} 
+	else
+	{
+		$("#alertError").text("Unknown error while saving..");
+		$("#alertError").show();
+	}
+	
+	$("#hidField").val("");
+	$("#registration-form")[0].reset();
+}
 
-});
+$(document).on("click", ".btnRemove", function(event)
+		{
+			$.ajax(
+			{
+				url : "PatientAPI",
+				type : "DELETE",
+				data : "nic=" + $(this).data("nic"),
+				dataType : "text",
+				complete : function(response, status)
+				{
+					onItemDeleteComplete(response.responseText, status);
+				}
+			});
+		});
+
+// Delete
+function onItemDeleteComplete(response, status)
+{
+	if (status == "success")
+	{
+		var resultSet = JSON.parse(response);
+		
+		if (resultSet.status.trim() == "success")
+		{
+			$("#alertSuccess").text("Successfully deleted.");
+			$("#alertSuccess").show();
+			$("#divItemsGrid").html(resultSet.data);
+		} 
+		else if (resultSet.status.trim() == "error")
+		{
+			$("#alertError").text(resultSet.data);
+			$("#alertError").show();
+		}
+	} 
+	else if (status == "error")
+	{
+		$("#alertError").text("Error while deleting.");
+		$("#alertError").show();
+	} 
+	else
+	{
+		$("#alertError").text("Unknown error while deleting..");
+		$("#alertError").show();
+	}
+}
+
+
+// Validation
+function validateItemForm()
+{
+	// nic is required
+	if ($("#nic").val().trim() == "")
+	{
+		return "Insert Item Code.";
+	}
+	
+	// name is required
+	if ($("#first-name").val().trim() == "")
+	{
+		return "Insert Item Name.";
+	}
+	
+	// last name is required
+	if ($("#last-name").val().trim() == "")
+	{
+		return "Insert Item Price.";
+	}
+	
+	// dob is required
+	if ($("#dob").val().trim() == "")
+	{
+		return "Insert Item Description.";
+	}
+	
+	// email is required
+	if ($("#email").val().trim() == "")
+	{
+		return "Insert Item Price.";
+	}
+	
+	// password is required
+	if ($("#password").val().trim() == "")
+	{
+		return "Insert Item Description.";
+	}
+	
+	return true;
+}
 
 // NIC validation
 function checkNic() {
@@ -79,11 +210,9 @@ function checkNic() {
 
 	if (nicLength == 10 || nicLength == 12) {
 		$("#nic_error").hide();
-		return true;
 	} else {
 		$("#nic_error").html("NIC should be 10 or 12 characters");
 		$("#nic_error").show();
-		return false;
 	}
 }
 
@@ -94,11 +223,9 @@ function checkEmail() {
 
 	if (regex.test(email)) {
 		$("#email_error").hide();
-		return true;
 	} else {
 		$("#email_error").html("Enter valid email");
 		$("#email_error").show();
-		return false;
 	}
 }
 
@@ -108,11 +235,9 @@ function checkPassword() {
 
 	if (passwordLength >= 8) {
 		$("#password_error").hide();
-		return true;
 	} else {
 		$("#password_error").html("Password have at least 8 characters");
 		$("#password_error").show();
-		return false;
 	}
 }
 
@@ -123,107 +248,8 @@ function checkRetypePassword() {
 
 	if (passwordLength == retypePasswordLength) {
 		$("#retype-password_error").hide();
-		return true;
 	} else {
 		$("#retype-password_error").html("Passwords don't match");
 		$("#retype-password_error").show();
-		return false;
-	}
-}
-
-// nic is required field
-function nicRequired() {
-	if ($("#nic").val().trim() == "") {
-		$("#nic_error").html("This field is required");
-		$("#nic_error").show();
-		return false;
-	} else {
-		$("#nic_error").hide();
-		return true;
-	}
-}
-
-// first name is required field
-function fNameRequired() {
-	if ($("#first-name").val().trim() == "") {
-		$("#fName_error").html("This field is required");
-		$("#fName_error").show();
-		return false;
-	} else {
-		$("#fName_error").hide();
-		return true;
-	}
-}
-
-// last name is required field
-function sNameRequired() {
-	if ($("#last-name").val().trim() == "") {
-		$("#lName_error").html("This field is required");
-		$("#lName_error").show();
-		return false;
-	}
-	else {
-		$("#lName_error").hide();
-		return true;
-	}
-}
-
-// dob is required field
-function dobRequired() {
-	if ($("#dob").val().trim() == "") {
-		$("#dob_error").html("This field is required");
-		$("#dob_error").show();
-		return false;
-	} else {
-		$("#dob_error").hide();
-		return true;
-	}
-}
-
-// gender is required field
-function genderRequied() {
-	if ($('input[name="gender"]:checked').length === 0) {
-		$("#gender_error").html("This field is required");
-		$("#gender_error").show();
-		return false;
-	} else {
-		$("#gender_error").hide();
-		return true;
-	}
-}
-
-// email is required field
-function emailRequied() {
-	if ($("#email").val().trim() == "") {
-		$("#email_error").html("This field is required");
-		$("#email_error").show();
-		return false;
-	} else {
-		$("#email_error").hide();
-		return true;
-	}
-}
-
-// password is required field
-function passwordRequied() {
-	if ($("#password").val().trim() == "") {
-		$("#password_error").html("This field is required");
-		$("#password_error").show();
-		return false;
-	} else {
-		$("#password_error").hide();
-		return true;
-	}
-}
-
-// retype password is required field
-function retypePasswordRequied() {
-	if ($("#retype-password").val().trim() == "") {
-		$("#retype-password_error").html("This field is required");
-		$("#retype-password_error").show();
-		return false;
-	} else {
-		$("#retype-password_error").hide();
-		return true;
 	}
 }

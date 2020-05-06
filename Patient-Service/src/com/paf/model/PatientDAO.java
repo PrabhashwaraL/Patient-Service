@@ -45,12 +45,12 @@ public static Connection getConnection( ) {
 			
 			ps.executeUpdate();
 			
-			output = "Patient Register Successfully";
+			String newItems = patientList();
+			output = "{\"status\":\"success\", \"data\": \"" + newItems + "\"}";
 			
 		} catch (Exception e) {
+			output = "{\"status\":\"error\", \"data\": \"Error while inserting the item.\"}";
 			e.printStackTrace();
-			
-			output = "Error in registration process";
 		}
 		
 		return output;
@@ -112,10 +112,12 @@ public static Connection getConnection( ) {
 			
 			ps.executeUpdate();
 			
-			status = "Patient Update Successfully";
+			String newItems = patientList();
+			status = "{\"status\":\"success\", \"data\": \"" + newItems + "\"}";
+			
 		} catch (Exception e) {
 			e.printStackTrace();
-			status = "Error in update process";
+			status = "{\"status\":\"error\", \"data\": \"Error in update process.\"}";
 		}
 		
 		return status;
@@ -135,11 +137,13 @@ public static Connection getConnection( ) {
 			
 			ps.execute();
 			
-			status = "Patient deleted successfuly";
+			String newItems = patientList();
+			status = "{\"status\":\"success\", \"data\": \"" + newItems + "\"}";
+			
 		} catch (Exception e) {
 			// TODO: handle exception
+			status = "{\"status\":\"error\", \"data\": \"Error in deleting process.\"}";
 			e.printStackTrace();
-			status = "Error in deleting process.";
 		}
 		
 		return status;
@@ -153,14 +157,14 @@ public static Connection getConnection( ) {
 		try {
 			Connection con = getConnection();
 			
-			output += "<head>\r\n" + 
-					"<link rel=\"stylesheet\" href=\"https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css\"\r\n" + 
-					"integrity=\"sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh\" crossorigin=\"anonymous\">\r\n" + 
+			output += "<head>" + 
+					"<link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css'" + 
+					"integrity='sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh' crossorigin='anonymous'>" + 
 					"</head>" + 
 					"<body>" +
-					"<table border=\"1\"><tr><th>NIC</th>" + "<th>First Name</th><th>Last Name</th>" + "<th>Date of Birth</th>" +
-					"<th>Gender</th>" + "<th>Email</th>" + "<th>Password</th>" + 
-					"</body>";
+					"<table border='1'><tr><th>NIC</th>" + "<th>First Name</th><th>Last Name</th>" + "<th>Date of Birth</th>" +
+					"<th>Gender</th>" + "<th>Email</th>" + "<th>Password</th>" + "<th>Update</th>" + "<th>Delete</th>" +
+					"</tr>";
 			
 			String query = "select * from patient_registration";
 			Statement statement = con.createStatement();
@@ -175,13 +179,17 @@ public static Connection getConnection( ) {
 				String email = rs.getString("email");
 				String password = rs.getString("patientPassword");
 				
-				output += "<tr><td>" + nic + "</td>";
+				output += "<tr><td><input id='hidFieldUpdate' name='hidFieldUpdate' type='hidden' value='" + nic + "'>" + nic + "</td>";
 				output += "<td>" + firstName + "</td>";
 				output += "<td>" + lastName + "</td>";
 				output += "<td>" + dob + "</td>";
 				output += "<td>" + gender + "</td>";
 				output += "<td>" + email + "</td>";
 				output += "<td>" + password + "</td>";
+
+				output += "<td><input name='btnUpdate' type='button' value='Update' class='btnUpdate btn btn-primary'></td>";
+				output += "<td>"
+						+ "<input name='btnDelete' type='button' value='Delete' class='btn btn-danger btnRemove' data-nic='" + nic + "'></td>";
 				
 				output += "</tr>";
 			}
