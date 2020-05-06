@@ -1,5 +1,6 @@
 $(document).ready(function()
 {
+	// clear alerts
 	if ($("#alertSuccess").text().trim() == "")
 	{
 		$("#alertSuccess").hide();
@@ -19,22 +20,22 @@ $(document).ready(function()
 	
 	// check number of characters for nic
 	$("#nic").focusout(function() {
-		vNic = checkNic();
+		checkNic();
 	});
 
 	// check email is valid or not
 	$("#email").focusout(function() {
-		vEmail = checkEmail();
+		checkEmail();
 	});
 
 	// check minimum requirement of password
 	$("#password").focusout(function() {
-		vPassword = checkPassword();
+		checkPassword();
 	});
 
 	// check matching password
 	$("#retype-password").focusout(function() {
-		vRetypePassword = checkRetypePassword();
+		checkRetypePassword();
 	});
 });
 
@@ -46,6 +47,7 @@ $(document).on("click", "#signin-button", function(event) {
 	$("#alertError").hide();
 
 
+	// validate inputs
 	var status = validateItemForm();
 
 	if (status != true) {
@@ -54,7 +56,6 @@ $(document).on("click", "#signin-button", function(event) {
 		return;
 	}
 
-	// If valid------------------------
 	var method = ($("#hidField").val() == "") ? "POST" : "PUT";
 
 	$.ajax({
@@ -83,6 +84,7 @@ $(document).on(
 			$("#password").val($(this).closest("tr").find('td:eq(6)').text());
 		});
 
+// patient register and update
 function onItemSaveComplete(response, status)
 {
 	if (status == "success")
@@ -130,7 +132,8 @@ $(document).on("click", ".btnRemove", function(event)
 			});
 		});
 
-// Delete
+
+// delete
 function onItemDeleteComplete(response, status)
 {
 	if (status == "success")
